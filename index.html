@@ -207,7 +207,7 @@
                             <span>誰會使用？他們重視甚麼價值觀？</span>
                         </h2>
                         <p class="text-sky-200 text-xs sm:text-sm mt-1">
-                            👆 點擊表格中間的空格，切換 <strong class="text-white">✔ 重視</strong>、<strong class="text-yellow-300">✔/✘ 部分重視</strong> 或 <strong class="text-rose-300">✘ 不重視</strong>！
+                            👆 點擊表格中間的空格，切換 <strong class="text-white">✔ 重視</strong> 或 <strong class="text-rose-300">✘ 不重視</strong>！
                         </p>
                     </div>
 
@@ -216,10 +216,6 @@
                         <div class="flex items-center gap-1.5 bg-emerald-500/20 border border-emerald-400/50 px-2.5 py-1 rounded-xl text-xs sm:text-sm font-bold">
                             <span class="w-6 h-6 rounded-lg bg-emerald-500 text-white flex items-center justify-center font-black shadow-sm">✔</span>
                             <span>重視 / 符合</span>
-                        </div>
-                        <div class="flex items-center gap-1.5 bg-amber-500/20 border border-amber-400/50 px-2.5 py-1 rounded-xl text-xs sm:text-sm font-bold">
-                            <span class="px-1.5 h-6 rounded-lg bg-amber-400 text-goaiNavy flex items-center justify-center font-black shadow-sm text-xs">✔/✘</span>
-                            <span>部分重視 / 視情況</span>
                         </div>
                         <div class="flex items-center gap-1.5 bg-rose-500/20 border border-rose-400/50 px-2.5 py-1 rounded-xl text-xs sm:text-sm font-bold">
                             <span class="w-6 h-6 rounded-lg bg-rose-500 text-white flex items-center justify-center font-black shadow-sm">✘</span>
@@ -298,7 +294,7 @@
 
                 <div class="mt-5 pt-3 border-t border-slate-100 bg-amber-50/70 p-3 rounded-2xl">
                     <p class="text-xs text-amber-900 font-medium leading-relaxed">
-                        💡 <strong>思考小貼士：</strong>如果出現 <span class="font-bold text-amber-700">✔/✘</span>（部分重視），代表不同持份者的想法可能有衝突，系統會自動在英文目標中加入平衡提醒喔！
+                        💡 <strong>思考小貼士：</strong>獲得最多 <span class="font-bold text-emerald-700">✔ 重視</span> 的價值觀，會成為聊天機器人的核心設計原則；而標記為 <span class="font-bold text-rose-700">✘ 不重視</span> 的項目，系統也會在目標中提醒避開喔！
                     </p>
                 </div>
             </div>
@@ -415,12 +411,11 @@
         const MAX_ITEMS = 6;
         const MIN_ITEMS = 1;
 
-        // 狀態定義：0 = 空白, 1 = Tick (重視), 2 = Tick & Cross (部分重視), 3 = Cross (不重視)
+        // 狀態定義：0 = 空白, 1 = Tick (重視), 2 = Cross (不重視)
         const CELL_STATES = [
             { id: 0, label: '未選擇', symbol: '', bg: 'bg-slate-50 hover:bg-sky-50', border: 'border-slate-200 border-dashed', text: 'text-slate-300' },
             { id: 1, label: '重視', symbol: '✔', bg: 'bg-emerald-100 hover:bg-emerald-200', border: 'border-emerald-400 border-solid', text: 'text-emerald-700' },
-            { id: 2, label: '部分重視', symbol: '✔ / ✘', bg: 'bg-amber-100 hover:bg-amber-200', border: 'border-amber-400 border-solid', text: 'text-amber-800' },
-            { id: 3, label: '不重視', symbol: '✘', bg: 'bg-rose-100 hover:bg-rose-200', border: 'border-rose-400 border-solid', text: 'text-rose-700' }
+            { id: 2, label: '不重視', symbol: '✘', bg: 'bg-rose-100 hover:bg-rose-200', border: 'border-rose-400 border-solid', text: 'text-rose-700' }
         ];
 
         // 來自 GoAI 工作紙第 1-2 頁的中文建議詞語
@@ -477,15 +472,12 @@
                 }
             },
             playClick(cellState) {
-                if (cellState === 1) { // Tick
+                if (cellState === 1) { // Tick (重視)
                     this.playTone(587.33, 'triangle', 0.12, 0.18);
                     setTimeout(() => this.playTone(880, 'triangle', 0.18, 0.18), 60);
-                } else if (cellState === 2) { // Tick & Cross
-                    this.playTone(523.25, 'sine', 0.12, 0.15);
-                    setTimeout(() => this.playTone(466.16, 'sine', 0.15, 0.15), 70);
-                } else if (cellState === 3) { // Cross
+                } else if (cellState === 2) { // Cross (不重視)
                     this.playTone(329.63, 'sawtooth', 0.14, 0.1);
-                } else { // Empty
+                } else { // Empty (未選擇)
                     this.playTone(400, 'sine', 0.08, 0.08);
                 }
             },
@@ -620,14 +612,14 @@
                 // 中間互動符號儲存格
                 state.values.forEach((_, cIdx) => {
                     const cellVal = state.cells[rIdx][cIdx] || 0;
-                    const cellInfo = CELL_STATES[cellVal];
+                    const cellInfo = CELL_STATES[cellVal] || CELL_STATES[0];
                     const isBottomRight = isLastRow && (cIdx === state.values.length - 1);
 
                     bodyHTML += `
                         <td class="p-2 border-2 border-slate-100 bg-white ${isBottomRight ? 'rounded-br-2xl' : ''} text-center align-middle">
                             <button onclick="cycleCell(${rIdx}, ${cIdx}, this)" 
                                     class="matrix-cell w-full h-16 sm:h-20 rounded-2xl border-2 ${cellInfo.bg} ${cellInfo.border} flex flex-col items-center justify-center gap-0.5 cursor-pointer shadow-2xs focus:outline-none"
-                                    title="點擊切換：重視 / 部分重視 / 不重視">
+                                    title="點擊切換：重視 / 不重視">
                                 ${cellVal === 0 ? `
                                     <span class="text-slate-300 text-xl font-bold">+</span>
                                     <span class="text-[11px] text-slate-400 font-bold">點擊選擇</span>
@@ -780,29 +772,29 @@
 
             const valueStats = state.values.map((valName, cIdx) => {
                 let tickCount = 0;
-                let partialCount = 0;
+                let crossCount = 0;
                 state.stakeholders.forEach((_, rIdx) => {
                     const cell = state.cells[rIdx][cIdx];
                     if (cell !== 0) totalFilled++;
                     if (cell === 1) tickCount++;
-                    if (cell === 2) partialCount++;
+                    if (cell === 2) crossCount++;
                 });
                 return {
                     name: valName || `價值觀 ${cIdx + 1}`,
                     tickCount,
-                    partialCount,
+                    crossCount,
                     maxPossible: state.stakeholders.length
                 };
             });
 
             document.getElementById('filled-counter').textContent = `已填寫 ${totalFilled} / ${totalCells} 格`;
 
-            const sorted = [...valueStats].sort((a, b) => (b.tickCount * 2 + b.partialCount) - (a.tickCount * 2 + a.partialCount));
+            const sorted = [...valueStats].sort((a, b) => b.tickCount - a.tickCount);
 
             const summaryContainer = document.getElementById('value-summary-list');
             summaryContainer.innerHTML = sorted.map((item, idx) => {
-                const pct = item.maxPossible > 0 ? Math.round(((item.tickCount + item.partialCount * 0.5) / item.maxPossible) * 100) : 0;
-                const isTop = idx === 0 && (item.tickCount > 0 || item.partialCount > 0);
+                const pct = item.maxPossible > 0 ? Math.round((item.tickCount / item.maxPossible) * 100) : 0;
+                const isTop = idx === 0 && item.tickCount > 0;
                 return `
                     <div class="bg-slate-50 p-2.5 rounded-xl border ${isTop ? 'border-emerald-400 bg-emerald-50/50' : 'border-slate-200'}">
                         <div class="flex items-center justify-between text-xs sm:text-sm font-bold mb-1">
@@ -811,7 +803,7 @@
                                 <span>${escapeHtml(item.name)}</span>
                             </span>
                             <span class="text-xs font-extrabold text-emerald-700">
-                                ${item.tickCount} 個 ✔ ${item.partialCount > 0 ? `• ${item.partialCount} 個 ✔/✘` : ''}
+                                ${item.tickCount} 個 ✔ ${item.crossCount > 0 ? `• ${item.crossCount} 個 ✘` : ''}
                             </span>
                         </div>
                         <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
@@ -832,9 +824,9 @@
             state.stakeholders = ['小朋友', '醫生', '老師'];
             state.values = ['不想生病', '需要工作', '想要玩樂'];
             state.cells = [
-                [1, 3, 1], // 小朋友：不想生病(✔), 需要工作(✘), 想要玩樂(✔)
-                [1, 1, 3], // 醫生：不想生病(✔), 需要工作(✔), 想要玩樂(✘)
-                [1, 1, 2]  // 老師：不想生病(✔), 需要工作(✔), 想要玩樂(✔/✘)
+                [1, 2, 1], // 小朋友：不想生病(✔), 需要工作(✘), 想要玩樂(✔)
+                [1, 1, 2], // 醫生：不想生病(✔), 需要工作(✔), 想要玩樂(✘)
+                [1, 1, 1]  // 老師：不想生病(✔), 需要工作(✔), 想要玩樂(✔)
             ];
 
             document.getElementById('chatbot-goal').value = 'When the user touches their face, my "Don\'t Touch Your Face" chatbot helper gently reminds them in a friendly and fun way so everyone stays healthy without interrupting learning or playtime!';
@@ -850,7 +842,7 @@
             const textToCopy = goalTextarea.value.trim();
 
             if (!textToCopy) {
-                AudioEngine.playClick(3);
+                AudioEngine.playClick(2);
                 showToast('尚未有目標文字可以複製！請先點擊「自動生成英文目標」。', '⚠️');
                 return;
             }
@@ -1082,10 +1074,8 @@
 
         function generateGoalFromMatrix(isRephrase = false) {
             const activeStakeholders = new Set();
-            const partialStakeholders = new Set();
             const valueScores = state.values.map((valName, cIdx) => {
                 let tick = 0;
-                let partial = 0;
                 let cross = 0;
                 state.stakeholders.forEach((sName, rIdx) => {
                     const cell = state.cells[rIdx][cIdx] || 0;
@@ -1094,52 +1084,46 @@
                         tick++;
                         activeStakeholders.add(cleanS);
                     } else if (cell === 2) {
-                        partial++;
-                        partialStakeholders.add(cleanS);
-                    } else if (cell === 3) {
                         cross++;
                     }
                 });
                 return {
                     rawName: valName.trim() || `價值觀 ${cIdx + 1}`,
                     tick,
-                    partial,
-                    cross,
-                    score: tick * 2 + partial
+                    cross
                 };
             });
 
-            const selectedValues = valueScores.filter(v => v.score > 0).sort((a, b) => b.score - a.score);
+            // 取得所有至少有 1 個「✔ 重視」的價值觀（不設 3 個上限，全部包含！）
+            const selectedValues = valueScores.filter(v => v.tick > 0).sort((a, b) => b.tick - a.tick);
 
             if (selectedValues.length === 0) {
-                AudioEngine.playClick(3);
-                showToast('請先在表格中間點擊格子，選擇持份者重視的價值觀（✔ 或 ✔/✘）！', '👆');
+                AudioEngine.playClick(2);
+                showToast('請先在表格中間點擊格子，選擇持份者重視的價值觀（✔ 重視）！', '👆');
                 return;
             }
 
             // 目標對象（中文分析用 & 英文輸出用）
-            let targetRawList = Array.from(activeStakeholders);
-            if (targetRawList.length === 0) {
-                targetRawList = Array.from(partialStakeholders);
-            }
+            const targetRawList = Array.from(activeStakeholders);
             const targetEnList = targetRawList.map(translateStakeholderToEn);
             const targetEnText = formatEnglishList(targetEnList, false);
             const targetZhText = formatChineseList(targetRawList);
 
-            // 前三大重視價值觀
-            const topValues = selectedValues.slice(0, 3);
-            const topEnInfos = topValues.map(v => getValueEnInfo(v.rawName));
-            const topEnNamesStr = formatEnglishList(topEnInfos.map(info => info.enName), true);
-            const topZhNamesStr = formatChineseList(topValues.map(v => v.rawName));
+            // 所有被選為「重視」的價值觀（支援 1 至 6 個全部納入）
+            const allTopEnInfos = selectedValues.map(v => getValueEnInfo(v.rawName));
+            const allTopEnNamesStr = formatEnglishList(allTopEnInfos.map(info => info.enName), true);
+            const allTopZhNamesStr = formatChineseList(selectedValues.map(v => v.rawName));
 
-            // 部分重視與不重視項目
-            const partialValues = valueScores.filter(v => v.partial > 0 && v.tick === 0);
-            const crossOnlyValues = valueScores.filter(v => v.cross > 0 && v.score === 0);
+            // 組合所有重視價值觀的具體行動描述（無論選了 3 個、4 個還是 6 個都會包含在內）
+            const allActionsText = formatEnglishList(allTopEnInfos.map(info => info.action), false);
+            const allBenefitsText = formatEnglishList(allTopEnInfos.map(info => info.benefit), false);
 
-            const pInfo = topEnInfos[0];
-            const sInfo = topEnInfos[1] || null;
+            // 全部持份者都標記「✘ 不重視」的項目
+            const crossOnlyValues = valueScores.filter(v => v.cross > 0 && v.tick === 0);
 
-            // 主題名稱處理（若含中文字元則用通用英文稱呼，若為英文則直接帶入）
+            const pInfo = allTopEnInfos[0];
+
+            // 主題名稱處理
             const rawTopic = document.getElementById('project-topic').value.trim();
             const hasChinese = /[\u4e00-\u9fa5]/.test(rawTopic);
             const botEnName = (rawTopic && !hasChinese) ? `My "${rawTopic}" chatbot` : 'My Chatbot Helper';
@@ -1151,28 +1135,22 @@
             let generatedEnglishGoal = '';
             let styleZhName = '';
 
-            // 英文平衡子句
-            let balanceClause = '';
-            if (partialValues.length > 0) {
-                const pEnNames = partialValues.map(v => getValueEnInfo(v.rawName).enName);
-                balanceClause = `, while carefully balancing ${formatEnglishList(pEnNames, true)}`;
-            } else if (crossOnlyValues.length > 0) {
-                const firstCrossInfo = getValueEnInfo(crossOnlyValues[0].rawName);
-                balanceClause = ` (${firstCrossInfo.avoid})`;
+            // 英文避開項目子句（若有完全不重視的價值觀）
+            let avoidClause = '';
+            if (crossOnlyValues.length > 0) {
+                const avoidList = formatEnglishList(crossOnlyValues.map(v => getValueEnInfo(v.rawName).avoid), false);
+                avoidClause = `, while ${avoidList}`;
             }
 
             if (goalStyleIndex === 0) {
                 styleZhName = '🌟 溫暖陪伴型';
-                const secondPart = sInfo ? ` and ${sInfo.action}` : '';
-                generatedEnglishGoal = `${botEnName}'s goal is to help ${targetEnText} by ${pInfo.action}${secondPart}, reflecting the values of ${topEnNamesStr} and ${pInfo.benefit}${balanceClause}!`;
+                generatedEnglishGoal = `${botEnName}'s goal is to help ${targetEnText} by ${allActionsText}, reflecting the values of ${allTopEnNamesStr} and ${pInfo.benefit}${avoidClause}!`;
             } else if (goalStyleIndex === 1) {
                 styleZhName = '🚀 實用幫手型';
-                const secondBenefit = sInfo ? ` and ${sInfo.benefit}` : '';
-                generatedEnglishGoal = `I want to design a chatbot that prioritizes ${topEnNamesStr} to support ${targetEnText}, ${pInfo.action} so that everyone enjoys ${pInfo.benefit}${secondBenefit}${balanceClause}.`;
+                generatedEnglishGoal = `I want to design a chatbot that prioritizes ${allTopEnNamesStr} to support ${targetEnText}, ${allActionsText} so that everyone enjoys ${allBenefitsText}${avoidClause}.`;
             } else {
                 styleZhName = '💡 使命宣言型';
-                const extraVal = sInfo ? ` and "${sInfo.enName}"` : '';
-                generatedEnglishGoal = `As a helpful companion for ${targetEnText}, ${botEnName} puts "${pInfo.enName}"${extraVal} first—${pInfo.action} to solve daily challenges and make life better${balanceClause}!`;
+                generatedEnglishGoal = `As a helpful companion for ${targetEnText}, ${botEnName} puts ${allTopEnNamesStr} first—${allActionsText} to solve daily challenges and make life better${avoidClause}!`;
             }
 
             // 填入目標框並觸發動畫
@@ -1192,17 +1170,15 @@
             const styleBadge = document.getElementById('goal-style-badge');
 
             styleBadge.textContent = styleZhName;
-            let insightSummary = `已將服務對象 <strong>${escapeHtml(targetZhText)}</strong> 與核心價值觀 <strong>${escapeHtml(topZhNamesStr)}</strong> 轉換為英文目標。`;
-            if (partialValues.length > 0) {
-                insightSummary += ` 系統也留意到 ${escapeHtml(formatChineseList(partialValues.map(v => v.rawName)))} 屬於「部分重視（✔/✘）」，已在英文句子中加入平衡描述！`;
-            } else if (crossOnlyValues.length > 0) {
+            let insightSummary = `已將服務對象 <strong>${escapeHtml(targetZhText)}</strong> 與全部 <strong>${selectedValues.length} 個</strong>重視的價值觀（<strong>${escapeHtml(allTopZhNamesStr)}</strong>）轉換為英文目標。`;
+            if (crossOnlyValues.length > 0) {
                 insightSummary += ` 同時避開了不重視的 ${escapeHtml(formatChineseList(crossOnlyValues.map(v => v.rawName)))}。`;
             }
             insightText.innerHTML = insightSummary;
             insightBox.classList.remove('hidden');
 
             AudioEngine.playFanfare();
-            showToast(isRephrase ? `已切換為「${styleZhName}」英文說法！` : '已根據表格自動生成英文目標！', '✨');
+            showToast(isRephrase ? `已切換為「${styleZhName}」英文說法！` : `已根據 ${selectedValues.length} 個重視價值觀生成英文目標！`, '✨');
         }
 
         // ==========================================
@@ -1333,11 +1309,6 @@
                             ctx.font = '900 24px "Noto Sans TC", sans-serif';
                             ctx.fillText('✔ 重視', x + colW / 2, y + 47);
                         } else if (cellVal === 2) {
-                            roundRect(ctx, bx, by, badgeW, badgeH, 12, '#FEF3C7');
-                            ctx.fillStyle = '#B45309';
-                            ctx.font = '900 20px "Noto Sans TC", sans-serif';
-                            ctx.fillText('✔ / ✘ 部分', x + colW / 2, y + 46);
-                        } else if (cellVal === 3) {
                             roundRect(ctx, bx, by, badgeW, badgeH, 12, '#FFE4E6');
                             ctx.fillStyle = '#BE123C';
                             ctx.font = '900 24px "Noto Sans TC", sans-serif';
