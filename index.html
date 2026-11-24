@@ -6,10 +6,10 @@
     <title>GoAI 聊天機器人小幫手：互動倫理列表遊戲</title>
     <!-- 載入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 載入 Google Fonts 繁體中文字體 (Noto Sans TC) 與圓體 -->
+    <!-- 載入 Google Fonts 繁體中文字體 (Noto Sans TC) 與英文字體 (Nunito) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -22,7 +22,8 @@
                         goaiLight: '#F0F7FF',
                     },
                     fontFamily: {
-                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                        sans: ['"Noto Sans TC"', '"Nunito"', 'sans-serif'],
+                        en: ['"Nunito"', '"Noto Sans TC"', 'sans-serif'],
                     }
                 }
             }
@@ -31,7 +32,7 @@
 
     <style>
         body {
-            font-family: 'Noto Sans TC', sans-serif;
+            font-family: 'Noto Sans TC', 'Nunito', sans-serif;
             background-color: #F0F7FF;
             background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
             background-size: 24px 24px;
@@ -187,8 +188,8 @@
                                class="w-full bg-transparent font-bold text-goaiNavy focus:outline-none text-sm sm:text-base">
                     </div>
                     <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 focus-within:border-goaiBlue focus-within:bg-white transition">
-                        <label class="block text-xs font-bold text-slate-500 mb-0.5">🤖 聊天機器人主題</label>
-                        <input type="text" id="project-topic" placeholder="例如：功課小老師 / 快樂減壓機" 
+                        <label class="block text-xs font-bold text-slate-500 mb-0.5">🤖 聊天機器人主題 (中/英文皆可)</label>
+                        <input type="text" id="project-topic" placeholder="例如：功課小老師 / Homework Helper" 
                                class="w-full bg-transparent font-bold text-goaiNavy focus:outline-none text-sm sm:text-base">
                     </div>
                 </div>
@@ -228,7 +229,7 @@
                 </div>
             </div>
 
-            <!-- 靈感標籤快選區 (方便小四學生直接點選工作紙上的詞語) -->
+            <!-- 靈感標籤快選區 -->
             <div class="bg-sky-50/80 border-b border-sky-100 p-4 space-y-3 no-print">
                 <!-- 持份者快選 -->
                 <div class="flex flex-wrap items-center gap-2">
@@ -278,7 +279,7 @@
             </div>
         </section>
 
-        <!-- 步驟三：智能統計與「聊天機器人小幫手」目標 -->
+        <!-- 步驟三：智能統計與「聊天機器人小幫手」英文目標輸出 -->
         <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <!-- 左側：即時價值觀統計分析 (5欄) -->
             <div class="lg:col-span-5 bg-white rounded-3xl shadow-md border-2 border-sky-100 p-5 flex flex-col justify-between">
@@ -288,7 +289,7 @@
                         <span class="text-xs text-slate-400 font-bold" id="filled-counter">已填寫 0 格</span>
                     </div>
                     <h3 class="text-lg font-extrabold text-goaiNavy mb-2">最受重視的價值觀排行</h3>
-                    <p class="text-xs text-slate-500 mb-4">獲得最多「✔ 重視」的價值觀，應該優先放進聊天機器人的設計目標中！</p>
+                    <p class="text-xs text-slate-500 mb-4">獲得最多「✔ 重視」的價值觀，會自動轉換成英文目標重點！</p>
                     
                     <div id="value-summary-list" class="space-y-2.5">
                         <!-- JS 動態生成統計條 -->
@@ -297,64 +298,82 @@
 
                 <div class="mt-5 pt-3 border-t border-slate-100 bg-amber-50/70 p-3 rounded-2xl">
                     <p class="text-xs text-amber-900 font-medium leading-relaxed">
-                        💡 <strong>思考小貼士：</strong>如果出現 <span class="font-bold text-amber-700">✔/✘</span>（部分重視），代表不同持份者的想法可能有衝突，設計時要特別小心平衡喔！
+                        💡 <strong>思考小貼士：</strong>如果出現 <span class="font-bold text-amber-700">✔/✘</span>（部分重視），代表不同持份者的想法可能有衝突，系統會自動在英文目標中加入平衡提醒喔！
                     </p>
                 </div>
             </div>
 
-            <!-- 右側：聊天機器人目標與匯出 (7欄) -->
+            <!-- 右側：英文目標生成器、一鍵複製與跳轉 Lesson 9 (7欄) -->
             <div class="lg:col-span-7 bg-white rounded-3xl shadow-md border-2 border-goaiYellow p-5 sm:p-6 flex flex-col justify-between">
                 <div>
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                        <span class="inline-block bg-goaiYellow text-goaiNavy text-xs font-black px-2.5 py-1 rounded-lg">步驟 3：確立整體目標（工作紙第 3 頁）</span>
+                        <span class="inline-block bg-goaiYellow text-goaiNavy text-xs font-black px-2.5 py-1 rounded-lg">步驟 3：生成英文目標 Prompt（供下一課使用）</span>
                         
                         <!-- 自動生成魔法按鈕組 -->
                         <div class="flex items-center gap-1.5 no-print">
                             <button onclick="generateGoalFromMatrix(false)" id="btn-gen-goal" class="btn-game bg-gradient-to-r from-goaiYellow to-amber-400 hover:from-yellow-300 hover:to-amber-300 text-goaiNavy font-black px-3.5 py-1.5 rounded-xl text-xs sm:text-sm flex items-center gap-1.5 cursor-pointer border border-amber-500/30">
                                 <span>✨</span>
-                                <span>根據表格自動生成目標</span>
+                                <span>自動生成英文目標</span>
                             </button>
-                            <button onclick="generateGoalFromMatrix(true)" id="btn-rephrase-goal" class="hidden btn-game bg-sky-100 hover:bg-sky-200 text-goaiNavy font-extrabold px-2.5 py-1.5 rounded-xl text-xs items-center gap-1 cursor-pointer border border-sky-300" title="切換另一種語氣風格">
+                            <button onclick="generateGoalFromMatrix(true)" id="btn-rephrase-goal" class="hidden btn-game bg-sky-100 hover:bg-sky-200 text-goaiNavy font-extrabold px-2.5 py-1.5 rounded-xl text-xs items-center gap-1 cursor-pointer border border-sky-300" title="切換另一種英文語氣風格">
                                 <span>🔄</span>
                                 <span>換個說法</span>
                             </button>
                         </div>
                     </div>
 
-                    <h3 class="text-xl font-black text-goaiNavy mb-1">🎯 「聊天機器人小幫手」的目標是甚麼？</h3>
+                    <h3 class="text-xl font-black text-goaiNavy mb-1">🎯 「聊天機器人小幫手」的英文目標 (English Goal)</h3>
                     <p class="text-xs sm:text-sm text-slate-500 mb-3">
-                        你可以點擊右上方「✨ 自動生成目標」讓 AI 幫你總結表格，再自由修改成最適合的句子：
+                        點擊右上角「✨ 自動生成英文目標」，系統會將你的中文表格轉換成流暢英文，按「📋 一鍵複製」即可貼上到 Lesson 9！
                     </p>
-                    <textarea id="chatbot-goal" rows="3" 
-                              placeholder="填好上面的表格後，試試點擊「✨ 根據表格自動生成目標」，或者自己寫出小幫手的任務！"
-                              class="w-full p-3.5 rounded-2xl bg-slate-50 border-2 border-slate-200 focus:border-goaiBlue focus:bg-white focus:outline-none text-goaiNavy font-bold text-sm sm:text-base transition resize-none"></textarea>
+                    
+                    <div class="relative">
+                        <textarea id="chatbot-goal" rows="3" 
+                                  placeholder="填好上面的表格後，點擊「✨ 自動生成英文目標」，系統會幫你寫出英文版的聊天機器人目標！"
+                                  class="w-full p-3.5 pr-28 rounded-2xl bg-slate-50 border-2 border-slate-200 focus:border-goaiBlue focus:bg-white focus:outline-none text-goaiNavy font-bold font-en text-sm sm:text-base transition resize-none"></textarea>
+                        
+                        <!-- 一鍵複製按鈕 -->
+                        <button onclick="copyGoalText()" id="btn-copy-goal" class="no-print absolute top-2.5 right-2.5 btn-game bg-goaiBlue hover:bg-sky-400 text-white font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 cursor-pointer shadow-sm" title="複製英文目標">
+                            <span id="copy-icon">📋</span>
+                            <span id="copy-text">一鍵複製</span>
+                        </button>
+                    </div>
 
                     <!-- AI 自動生成結果分析小卡片 -->
                     <div id="goal-insight-box" class="hidden mt-3 bg-sky-50/90 border border-sky-200 rounded-2xl p-3 text-xs space-y-1.5 animate-pop">
                         <div class="flex items-center justify-between">
                             <span class="font-black text-goaiNavy flex items-center gap-1">
                                 <span>🤖</span>
-                                <span>小幫手生成分析：</span>
+                                <span>小幫手英文轉換分析：</span>
                             </span>
-                            <span id="goal-style-badge" class="bg-goaiBlue text-white font-bold px-2 py-0.5 rounded-full text-[11px]">溫暖陪伴型</span>
+                            <span id="goal-style-badge" class="bg-goaiBlue text-white font-bold px-2 py-0.5 rounded-full text-[11px]">🌟 溫暖陪伴型</span>
                         </div>
                         <p id="goal-insight-text" class="text-slate-600 leading-relaxed font-medium"></p>
                     </div>
                 </div>
 
-                <!-- 底部完成與匯出按鈕區 -->
-                <div class="mt-5 flex flex-wrap items-center justify-between gap-3 no-print">
-                    <button onclick="celebrateCompletion()" class="btn-game bg-emerald-500 hover:bg-emerald-400 text-white font-black px-5 py-3 rounded-2xl text-sm sm:text-base flex items-center gap-2 cursor-pointer">
-                        <span>🎉</span>
-                        <span>完成倫理列表！</span>
-                    </button>
+                <!-- 底部完成、跳轉 Lesson 9 與匯出按鈕區 -->
+                <div class="mt-5 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2.5 no-print">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="celebrateCompletion()" class="btn-game bg-emerald-500 hover:bg-emerald-400 text-white font-black px-4 py-2.5 rounded-2xl text-xs sm:text-sm flex items-center gap-1.5 cursor-pointer">
+                            <span>🎉</span>
+                            <span>完成列表！</span>
+                        </button>
+
+                        <!-- 跳轉至 Lesson 9 按鈕 -->
+                        <a href="https://otcchow.github.io/2627_teched_lesson_9/" target="_blank" rel="noopener noreferrer" onclick="AudioEngine.playFanfare()" class="btn-game bg-gradient-to-r from-indigo-600 to-goaiBlue hover:from-indigo-500 hover:to-sky-400 text-white font-black px-4 py-2.5 rounded-2xl text-xs sm:text-sm flex items-center gap-1.5 cursor-pointer">
+                            <span>🚀</span>
+                            <span>前往 Lesson 9</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
 
                     <div class="flex flex-wrap items-center gap-2">
-                        <button onclick="downloadMatrixImage()" class="btn-game bg-goaiNavy hover:bg-slate-800 text-goaiYellow font-bold px-4 py-3 rounded-2xl text-sm flex items-center gap-2 cursor-pointer">
+                        <button onclick="downloadMatrixImage()" class="btn-game bg-goaiNavy hover:bg-slate-800 text-goaiYellow font-bold px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm flex items-center gap-1.5 cursor-pointer">
                             <span>📸</span>
-                            <span>下載圖片 (交功課)</span>
+                            <span>下載圖片</span>
                         </button>
-                        <button onclick="window.print()" class="btn-game bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3.5 py-3 rounded-2xl text-sm flex items-center gap-1.5 cursor-pointer" title="列印工作紙">
+                        <button onclick="window.print()" class="btn-game bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-2.5 rounded-2xl text-xs sm:text-sm flex items-center gap-1 cursor-pointer" title="列印工作紙">
                             <span>🖨️</span>
                             <span class="hidden sm:inline">列印</span>
                         </button>
@@ -404,7 +423,7 @@
             { id: 3, label: '不重視', symbol: '✘', bg: 'bg-rose-100 hover:bg-rose-200', border: 'border-rose-400 border-solid', text: 'text-rose-700' }
         ];
 
-        // 來自 GoAI 工作紙第 1-2 頁的建議詞語
+        // 來自 GoAI 工作紙第 1-2 頁的中文建議詞語
         const SUGGESTED_STAKEHOLDERS = ['我自己', '一位朋友', '爸爸或媽媽', '兄弟姊妹', '老師或教練', '醫生', '長輩/祖父母'];
         const SUGGESTED_VALUES = ['趣味', '友善', '樂於助人', '幽默', '效率', '簡便', '健康', '創意', '學習與成長'];
 
@@ -412,7 +431,6 @@
         let state = {
             stakeholders: ['我自己', '爸爸或媽媽', '老師'],
             values: ['友善', '樂於助人', '效率'],
-            // cells[rowIndex][colIndex] = 0 | 1 | 2 | 3
             cells: [
                 [0, 0, 0],
                 [0, 0, 0],
@@ -459,15 +477,15 @@
                 }
             },
             playClick(cellState) {
-                if (cellState === 1) { // Tick: 清脆上揚音
-                    this.playTone(587.33, 'triangle', 0.12, 0.18); // D5
-                    setTimeout(() => this.playTone(880, 'triangle', 0.18, 0.18), 60); // A5
-                } else if (cellState === 2) { // Tick & Cross: 雙音提示
-                    this.playTone(523.25, 'sine', 0.12, 0.15); // C5
-                    setTimeout(() => this.playTone(466.16, 'sine', 0.15, 0.15), 70); // Bb4
-                } else if (cellState === 3) { // Cross: 低沉短音
-                    this.playTone(329.63, 'sawtooth', 0.14, 0.1); // E4
-                } else { // Empty: 輕微氣泡音
+                if (cellState === 1) { // Tick
+                    this.playTone(587.33, 'triangle', 0.12, 0.18);
+                    setTimeout(() => this.playTone(880, 'triangle', 0.18, 0.18), 60);
+                } else if (cellState === 2) { // Tick & Cross
+                    this.playTone(523.25, 'sine', 0.12, 0.15);
+                    setTimeout(() => this.playTone(466.16, 'sine', 0.15, 0.15), 70);
+                } else if (cellState === 3) { // Cross
+                    this.playTone(329.63, 'sawtooth', 0.14, 0.1);
+                } else { // Empty
                     this.playTone(400, 'sine', 0.08, 0.08);
                 }
             },
@@ -480,7 +498,7 @@
                 setTimeout(() => this.playTone(250, 'triangle', 0.15, 0.12), 60);
             },
             playFanfare() {
-                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                const notes = [523.25, 659.25, 783.99, 1046.50];
                 notes.forEach((n, i) => {
                     setTimeout(() => this.playTone(n, 'triangle', 0.25, 0.18), i * 90);
                 });
@@ -507,7 +525,6 @@
             renderMatrix();
         }
 
-        // 渲染快速選擇標籤
         function renderChips() {
             const sContainer = document.getElementById('stakeholder-chips');
             sContainer.innerHTML = SUGGESTED_STAKEHOLDERS.map(name => `
@@ -526,7 +543,6 @@
             `).join('');
         }
 
-        // 渲染整個倫理列表矩陣
         function renderMatrix() {
             const thead = document.getElementById('matrix-head');
             const tbody = document.getElementById('matrix-body');
@@ -534,7 +550,6 @@
             // 1. 渲染表頭 (價值觀 Columns)
             let headHTML = `
                 <tr>
-                    <!-- 左上角交叉標題格 -->
                     <th class="p-3 bg-goaiNavy text-white rounded-tl-2xl border-2 border-goaiNavy w-44 sm:w-52 relative overflow-hidden">
                         <div class="flex flex-col justify-between h-full text-xs sm:text-sm">
                             <div class="text-right text-goaiYellow font-black flex items-center justify-end gap-1">
@@ -636,7 +651,7 @@
         // ==========================================
         // 4. 互動操作功能 (CRUD & Cell Cycling)
         // ==========================================
-        function cycleCell(rIdx, cIdx, btnElement) {
+        function cycleCell(rIdx, cIdx) {
             const current = state.cells[rIdx][cIdx] || 0;
             const next = (current + 1) % CELL_STATES.length;
             state.cells[rIdx][cIdx] = next;
@@ -644,7 +659,6 @@
             AudioEngine.playClick(next);
             renderMatrix();
 
-            // 觸發彈跳動畫
             setTimeout(() => {
                 const rows = document.querySelectorAll('#matrix-body tr');
                 if (rows[rIdx]) {
@@ -669,7 +683,6 @@
         }
 
         function quickAddStakeholder(name) {
-            // 如果有空白或預設名稱的格子，優先填入該格；否則新增一列
             const emptyIdx = state.stakeholders.findIndex(s => s.trim() === '' || s.startsWith('持份者 '));
             if (emptyIdx !== -1) {
                 state.stakeholders[emptyIdx] = name;
@@ -765,7 +778,6 @@
             let totalFilled = 0;
             const totalCells = state.stakeholders.length * state.values.length;
 
-            // 計算每個價值觀的得分 (Tick = 2分, Tick/Cross = 1分)
             const valueStats = state.values.map((valName, cIdx) => {
                 let tickCount = 0;
                 let partialCount = 0;
@@ -785,7 +797,6 @@
 
             document.getElementById('filled-counter').textContent = `已填寫 ${totalFilled} / ${totalCells} 格`;
 
-            // 依重視程度排序
             const sorted = [...valueStats].sort((a, b) => (b.tickCount * 2 + b.partialCount) - (a.tickCount * 2 + a.partialCount));
 
             const summaryContainer = document.getElementById('value-summary-list');
@@ -812,10 +823,9 @@
         }
 
         // ==========================================
-        // 6. 載入簡報範例 & 清空重設
+        // 6. 載入簡報範例、一鍵複製英文目標 & 清空重設
         // ==========================================
         function loadDemoExample() {
-            // 對應簡報第 22-23 頁：「請勿觸碰臉部」專案範例
             document.getElementById('group-members').value = 'GoAI 示範小組';
             document.getElementById('project-topic').value = '「請勿觸碰臉部」提醒小幫手';
             
@@ -827,11 +837,66 @@
                 [1, 1, 2]  // 老師：不想生病(✔), 需要工作(✔), 想要玩樂(✔/✘)
             ];
 
-            document.getElementById('chatbot-goal').value = '當使用者觸摸臉部時，小幫手會用友善有趣的方式出言提醒，幫助大家保持健康、減少生病，同時不影響大家學習和玩樂！';
+            document.getElementById('chatbot-goal').value = 'When the user touches their face, my "Don\'t Touch Your Face" chatbot helper gently reminds them in a friendly and fun way so everyone stays healthy without interrupting learning or playtime!';
 
             AudioEngine.playFanfare();
             renderMatrix();
-            showToast('已載入簡報範例：「請勿觸碰臉部」專案！', '💡');
+            showToast('已載入範例並生成英文目標！', '💡');
+        }
+
+        // 一鍵複製英文目標功能
+        function copyGoalText() {
+            const goalTextarea = document.getElementById('chatbot-goal');
+            const textToCopy = goalTextarea.value.trim();
+
+            if (!textToCopy) {
+                AudioEngine.playClick(3);
+                showToast('尚未有目標文字可以複製！請先點擊「自動生成英文目標」。', '⚠️');
+                return;
+            }
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    triggerCopySuccessFeedback();
+                }).catch(() => {
+                    fallbackCopy(goalTextarea);
+                });
+            } else {
+                fallbackCopy(goalTextarea);
+            }
+        }
+
+        function fallbackCopy(textarea) {
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            try {
+                document.execCommand('copy');
+                triggerCopySuccessFeedback();
+            } catch (err) {
+                showToast('複製失敗，請手動選取文字複製。', '❌');
+            }
+            window.getSelection().removeAllRanges();
+        }
+
+        function triggerCopySuccessFeedback() {
+            AudioEngine.playAdd();
+            const copyBtn = document.getElementById('btn-copy-goal');
+            const copyIcon = document.getElementById('copy-icon');
+            const copyText = document.getElementById('copy-text');
+
+            copyBtn.classList.remove('bg-goaiBlue', 'hover:bg-sky-400');
+            copyBtn.classList.add('bg-emerald-500', 'hover:bg-emerald-400');
+            copyIcon.textContent = '✅';
+            copyText.textContent = '已複製！';
+
+            showToast('英文目標已複製到剪貼簿！可直接貼上到 Lesson 9', '📋');
+
+            setTimeout(() => {
+                copyBtn.classList.add('bg-goaiBlue', 'hover:bg-sky-400');
+                copyBtn.classList.remove('bg-emerald-500', 'hover:bg-emerald-400');
+                copyIcon.textContent = '📋';
+                copyText.textContent = '一鍵複製';
+            }, 2200);
         }
 
         function openConfirmModal() {
@@ -852,7 +917,6 @@
             document.getElementById('project-topic').value = '';
             document.getElementById('chatbot-goal').value = '';
 
-            // 隱藏自動生成分析卡片與「換個說法」按鈕
             document.getElementById('goal-insight-box').classList.add('hidden');
             const rephraseBtn = document.getElementById('btn-rephrase-goal');
             rephraseBtn.classList.add('hidden');
@@ -873,90 +937,141 @@
         }
 
         // ==========================================
-        // 6.5 智能整體目標生成器 (Smart Goal Generator)
+        // 6.5 智能英文目標生成器 (中文表格 -> 英文 Prompt)
         // ==========================================
         let goalStyleIndex = 0;
 
-        // 針對工作紙常見價值觀的具體行動詞庫（適合小四學生閱讀）
-        const VALUE_ACTION_PHRASES = {
+        // 中文持份者自動對照英文
+        const STAKEHOLDER_EN_MAP = {
+            '我自己': 'myself (students)',
+            '一位朋友': 'a friend',
+            '朋友': 'friends',
+            '爸爸或媽媽': 'parents',
+            '父母': 'parents',
+            '爸爸': 'dad',
+            '媽媽': 'mom',
+            '兄弟姊妹': 'siblings',
+            '老師或教練': 'teachers and coaches',
+            '老師': 'teachers',
+            '教練': 'coaches',
+            '醫生': 'doctors',
+            '長輩/祖父母': 'grandparents and elders',
+            '長輩': 'elders',
+            '祖父母': 'grandparents',
+            '小朋友': 'children',
+            '同學': 'classmates'
+        };
+
+        // 中文價值觀對應英文詞彙與行動描述
+        const VALUE_EN_LIBRARY = {
             '趣味': {
-                action: '透過有趣好玩的互動方式',
-                benefit: '讓過程充滿樂趣、不會感到沉悶',
-                avoid: '避免死板無聊的說教'
+                enName: 'fun',
+                action: 'using playful and engaging interactions',
+                benefit: 'keeping the experience exciting and never boring',
+                avoid: 'avoiding dull or rigid lectures'
             },
             '友善': {
-                action: '用親切有禮、溫柔鼓勵的語氣',
-                benefit: '讓人感到被尊重和溫暖',
-                avoid: '避免冷漠或令人不舒服的說話'
+                enName: 'friendliness',
+                action: 'speaking with a warm, polite, and encouraging tone',
+                benefit: 'making everyone feel welcomed and respected',
+                avoid: 'avoiding cold or harsh responses'
             },
             '樂於助人': {
-                action: '主動關心並提供貼心的建議',
-                benefit: '真正幫到大家解決眼前的困難',
-                avoid: '避免敷衍了事或不理會問題'
+                enName: 'helpfulness',
+                action: 'offering thoughtful and supportive guidance',
+                benefit: 'genuinely helping users solve everyday problems',
+                avoid: 'avoiding unhelpful or vague replies'
             },
             '幽默': {
-                action: '加入輕鬆幽默的小笑話或風趣對話',
-                benefit: '令人保持好心情和笑逐顏開',
-                avoid: '避免過度嚴肅緊張'
+                enName: 'humor',
+                action: 'adding light-hearted jokes and cheerful banter',
+                benefit: 'bringing smiles and boosting everyone\'s mood',
+                avoid: 'avoiding being overly serious'
             },
             '效率': {
-                action: '快速、準確地提供重點資訊',
-                benefit: '節省寶貴的時間並順利完成任務',
-                avoid: '避免浪費時間或長篇大論'
+                enName: 'efficiency',
+                action: 'delivering fast, clear, and accurate answers',
+                benefit: 'saving valuable time and completing tasks smoothly',
+                avoid: 'avoiding wasting time with long explanations'
             },
             '簡便': {
-                action: '用簡單易明、一步一步的指引',
-                benefit: '讓事情變得更容易上手和完成',
-                avoid: '避免使用太深奧複雜的步驟'
+                enName: 'simplicity',
+                action: 'giving easy-to-follow, step-by-step instructions',
+                benefit: 'making tasks effortless for anyone to understand',
+                avoid: 'avoiding confusing or complicated steps'
             },
             '健康': {
-                action: '提醒建立良好的健康與安全習慣',
-                benefit: '守護大家的身心健康、減少生病',
-                avoid: '避免忽略身體健康與休息'
+                enName: 'health',
+                action: 'sharing healthy habit reminders and safety tips',
+                benefit: 'protecting everyone\'s well-being and preventing illness',
+                avoid: 'avoiding habits that harm health'
             },
             '創意': {
-                action: '啟發新奇點子和多元化的靈感',
-                benefit: '激發大家的想像力與創造力',
-                avoid: '避免千篇一律的死板答案'
+                enName: 'creativity',
+                action: 'sparking fresh ideas and imaginative solutions',
+                benefit: 'inspiring creativity and out-of-the-box thinking',
+                avoid: 'avoiding repetitive, boring answers'
             },
             '學習與成長': {
-                action: '耐心解答疑難並讚賞每一次努力',
-                benefit: '幫助大家在學習中不斷進步和建立自信',
-                avoid: '避免直接給出答案而不引導思考'
+                enName: 'learning and growth',
+                action: 'patiently explaining concepts and celebrating effort',
+                benefit: 'helping users learn, improve, and build confidence',
+                avoid: 'avoiding just giving away answers without teaching'
             },
             '不想生病': {
-                action: '適時發出健康提醒與保護建議',
-                benefit: '遠離病菌、保持身體健康',
-                avoid: '避免增加生病的風險'
+                enName: 'staying healthy',
+                action: 'sending timely health and hygiene reminders',
+                benefit: 'keeping germs away and helping everyone stay well',
+                avoid: 'avoiding health risks'
             },
             '需要工作': {
-                action: '在不干擾日常專注的情況下提供協助',
-                benefit: '讓大家能安心順利地處理工作或學習',
-                avoid: '避免打擾正常的工作與學習進度'
+                enName: 'productivity',
+                action: 'assisting quietly without disrupting focus',
+                benefit: 'letting people work or study productively',
+                avoid: 'avoiding interrupting work or study time'
             },
             '想要玩樂': {
-                action: '結合輕鬆愉快的小遊戲或趣味元素',
-                benefit: '在達成目標的同時也能享受玩樂時光',
-                avoid: '避免剝奪大家休息和玩樂的樂趣'
+                enName: 'playfulness',
+                action: 'blending in fun mini-games and playful elements',
+                benefit: 'ensuring everyone still enjoys their playtime',
+                avoid: 'avoiding taking away fun and relaxation'
             }
         };
 
-        // 格式化持份者稱謂，令句子更自然
-        function formatStakeholderNames(names) {
-            const cleaned = names.map(n => n.trim()).filter(Boolean);
-            if (cleaned.length === 0) return '使用者';
-            if (cleaned.length === 1) {
-                return cleaned[0] === '我自己' ? '我自己（同學）' : cleaned[0];
-            }
-            if (cleaned.length === 2) {
-                return `${cleaned[0]}和${cleaned[1]}`;
-            }
-            const last = cleaned.pop();
-            return `${cleaned.join('、')}以及${last}`;
+        // 轉換持份者名稱為英文
+        function translateStakeholderToEn(rawName) {
+            const trimmed = rawName.trim();
+            if (!trimmed) return 'users';
+            return STAKEHOLDER_EN_MAP[trimmed] || trimmed;
         }
 
-        // 格式化多個價值觀名稱
-        function joinChineseList(items) {
+        // 取得價值觀英文資訊
+        function getValueEnInfo(rawVal) {
+            const trimmed = rawVal.trim();
+            if (VALUE_EN_LIBRARY[trimmed]) {
+                return VALUE_EN_LIBRARY[trimmed];
+            }
+            // 若學生自訂其他中文或英文價值觀
+            const lowerVal = trimmed.toLowerCase();
+            return {
+                enName: lowerVal,
+                action: `focusing on "${lowerVal}"`,
+                benefit: `delivering a "${lowerVal}" experience`,
+                avoid: `avoiding neglecting "${lowerVal}"`
+            };
+        }
+
+        function formatEnglishList(items, quote = false) {
+            const formatted = quote ? items.map(i => `"${i}"`) : items;
+            if (formatted.length === 0) return '';
+            if (formatted.length === 1) return formatted[0];
+            if (formatted.length === 2) return `${formatted[0]} and ${formatted[1]}`;
+            const last = formatted[formatted.length - 1];
+            const rest = formatted.slice(0, -1).join(', ');
+            return `${rest}, and ${last}`;
+        }
+
+        function formatChineseList(items) {
             if (items.length === 0) return '';
             if (items.length === 1) return `「${items[0]}」`;
             if (items.length === 2) return `「${items[0]}」和「${items[1]}」`;
@@ -966,7 +1081,6 @@
         }
 
         function generateGoalFromMatrix(isRephrase = false) {
-            // 1. 收集所有持份者與價值觀的互動數據
             const activeStakeholders = new Set();
             const partialStakeholders = new Set();
             const valueScores = state.values.map((valName, cIdx) => {
@@ -987,7 +1101,7 @@
                     }
                 });
                 return {
-                    name: valName.trim() || `價值觀 ${cIdx + 1}`,
+                    rawName: valName.trim() || `價值觀 ${cIdx + 1}`,
                     tick,
                     partial,
                     cross,
@@ -995,7 +1109,6 @@
                 };
             });
 
-            // 檢查是否有勾選任何重視或部分重視
             const selectedValues = valueScores.filter(v => v.score > 0).sort((a, b) => b.score - a.score);
 
             if (selectedValues.length === 0) {
@@ -1004,84 +1117,72 @@
                 return;
             }
 
-            // 2. 整理目標對象 (Target Stakeholders)
-            let targetList = Array.from(activeStakeholders);
-            if (targetList.length === 0) {
-                targetList = Array.from(partialStakeholders);
+            // 目標對象（中文分析用 & 英文輸出用）
+            let targetRawList = Array.from(activeStakeholders);
+            if (targetRawList.length === 0) {
+                targetRawList = Array.from(partialStakeholders);
             }
-            const targetText = formatStakeholderNames(targetList);
+            const targetEnList = targetRawList.map(translateStakeholderToEn);
+            const targetEnText = formatEnglishList(targetEnList, false);
+            const targetZhText = formatChineseList(targetRawList);
 
-            // 3. 整理核心價值觀 (Top Values) 與 平衡/避免項目
+            // 前三大重視價值觀
             const topValues = selectedValues.slice(0, 3);
-            const topValueNames = topValues.map(v => v.name);
-            const topValuesStr = joinChineseList(topValueNames);
+            const topEnInfos = topValues.map(v => getValueEnInfo(v.rawName));
+            const topEnNamesStr = formatEnglishList(topEnInfos.map(info => info.enName), true);
+            const topZhNamesStr = formatChineseList(topValues.map(v => v.rawName));
 
-            const partialValues = valueScores.filter(v => v.partial > 0 && v.tick === 0).map(v => v.name);
-            const crossOnlyValues = valueScores.filter(v => v.cross > 0 && v.score === 0).map(v => v.name);
+            // 部分重視與不重視項目
+            const partialValues = valueScores.filter(v => v.partial > 0 && v.tick === 0);
+            const crossOnlyValues = valueScores.filter(v => v.cross > 0 && v.score === 0);
 
-            // 取得具體行動與好處描述
-            const primaryVal = topValues[0].name;
-            const secondaryVal = topValues[1] ? topValues[1].name : null;
+            const pInfo = topEnInfos[0];
+            const sInfo = topEnInfos[1] || null;
 
-            const pInfo = VALUE_ACTION_PHRASES[primaryVal] || {
-                action: `注重「${primaryVal}」的方式`,
-                benefit: `滿足大家對「${primaryVal}」的期望`,
-                avoid: `避免忽略「${primaryVal}」`
-            };
-
-            const sInfo = secondaryVal ? (VALUE_ACTION_PHRASES[secondaryVal] || {
-                action: `兼顧「${secondaryVal}」`,
-                benefit: `同時體現「${secondaryVal}」的價值`,
-                avoid: ''
-            }) : null;
-
-            // 取得主題名稱（如有填寫）
+            // 主題名稱處理（若含中文字元則用通用英文稱呼，若為英文則直接帶入）
             const rawTopic = document.getElementById('project-topic').value.trim();
-            const botName = rawTopic ? `「${rawTopic}」` : '我的聊天機器人小幫手';
+            const hasChinese = /[\u4e00-\u9fa5]/.test(rawTopic);
+            const botEnName = (rawTopic && !hasChinese) ? `My "${rawTopic}" chatbot` : 'My Chatbot Helper';
 
-            // 4. 根據風格切換不同句式模板
             if (isRephrase) {
                 goalStyleIndex = (goalStyleIndex + 1) % 3;
             }
 
-            let generatedSentence = '';
-            let styleName = '';
+            let generatedEnglishGoal = '';
+            let styleZhName = '';
 
-            // 額外平衡句（如有部分重視或不重視項目）
+            // 英文平衡子句
             let balanceClause = '';
             if (partialValues.length > 0) {
-                balanceClause = `，並小心平衡${joinChineseList(partialValues)}的需要`;
+                const pEnNames = partialValues.map(v => getValueEnInfo(v.rawName).enName);
+                balanceClause = `, while carefully balancing ${formatEnglishList(pEnNames, true)}`;
             } else if (crossOnlyValues.length > 0) {
-                const firstCross = crossOnlyValues[0];
-                const avoidHint = VALUE_ACTION_PHRASES[firstCross]?.avoid || `避免過於偏重「${firstCross}」`;
-                balanceClause = `（同時${avoidHint}）`;
+                const firstCrossInfo = getValueEnInfo(crossOnlyValues[0].rawName);
+                balanceClause = ` (${firstCrossInfo.avoid})`;
             }
 
             if (goalStyleIndex === 0) {
-                // 風格 1：溫暖陪伴與價值導向型（最貼合 GoAI 工作紙）
-                styleName = '🌟 溫暖陪伴型';
-                const secondPart = sInfo ? `並結合${sInfo.action}，` : '，';
-                generatedSentence = `${botName}的目標是幫助${targetText}，${pInfo.action}${secondPart}體現${topValuesStr}的價值觀，${pInfo.benefit}${balanceClause}！`;
+                styleZhName = '🌟 溫暖陪伴型';
+                const secondPart = sInfo ? ` and ${sInfo.action}` : '';
+                generatedEnglishGoal = `${botEnName}'s goal is to help ${targetEnText} by ${pInfo.action}${secondPart}, reflecting the values of ${topEnNamesStr} and ${pInfo.benefit}${balanceClause}!`;
             } else if (goalStyleIndex === 1) {
-                // 風格 2：實用解決問題型
-                styleName = '🚀 實用幫手型';
-                const secondBenefit = sInfo ? `以及${sInfo.benefit}` : '';
-                generatedSentence = `我希望設計一個重視${topValuesStr}的聊天機器人，專門為${targetText}提供協助，透過${pInfo.action}，讓大家${pInfo.benefit}${secondBenefit}${balanceClause}。`;
+                styleZhName = '🚀 實用幫手型';
+                const secondBenefit = sInfo ? ` and ${sInfo.benefit}` : '';
+                generatedEnglishGoal = `I want to design a chatbot that prioritizes ${topEnNamesStr} to support ${targetEnText}, ${pInfo.action} so that everyone enjoys ${pInfo.benefit}${secondBenefit}${balanceClause}.`;
             } else {
-                // 風格 3：創意使命宣言型
-                styleName = '💡 使命宣言型';
-                const extraVal = secondaryVal ? `與「${secondaryVal}」` : '';
-                generatedSentence = `作為服務${targetText}的小幫手，${botName}會以「${primaryVal}」${extraVal}為核心原則，${pInfo.action}陪伴大家解決日常難題，成為值得信賴的好夥伴${balanceClause}！`;
+                styleZhName = '💡 使命宣言型';
+                const extraVal = sInfo ? ` and "${sInfo.enName}"` : '';
+                generatedEnglishGoal = `As a helpful companion for ${targetEnText}, ${botEnName} puts "${pInfo.enName}"${extraVal} first—${pInfo.action} to solve daily challenges and make life better${balanceClause}!`;
             }
 
-            // 5. 填入輸入框並播放動畫與音效
+            // 填入目標框並觸發動畫
             const goalTextarea = document.getElementById('chatbot-goal');
-            goalTextarea.value = generatedSentence;
+            goalTextarea.value = generatedEnglishGoal;
             goalTextarea.classList.remove('magic-highlight');
-            void goalTextarea.offsetWidth; // 觸發重繪以重新播放動畫
+            void goalTextarea.offsetWidth;
             goalTextarea.classList.add('magic-highlight');
 
-            // 顯示「換個說法」按鈕與分析提示
+            // 顯示「換個說法」按鈕與中文分析提示
             const rephraseBtn = document.getElementById('btn-rephrase-goal');
             rephraseBtn.classList.remove('hidden');
             rephraseBtn.classList.add('flex');
@@ -1090,18 +1191,18 @@
             const insightText = document.getElementById('goal-insight-text');
             const styleBadge = document.getElementById('goal-style-badge');
 
-            styleBadge.textContent = styleName;
-            let insightSummary = `主要服務對象為 <strong>${escapeHtml(targetText)}</strong>，最重視 <strong>${escapeHtml(topValuesStr)}</strong>。`;
+            styleBadge.textContent = styleZhName;
+            let insightSummary = `已將服務對象 <strong>${escapeHtml(targetZhText)}</strong> 與核心價值觀 <strong>${escapeHtml(topZhNamesStr)}</strong> 轉換為英文目標。`;
             if (partialValues.length > 0) {
-                insightSummary += ` 系統也幫你留意到 ${escapeHtml(joinChineseList(partialValues))} 屬於「部分重視（✔/✘）」，已在目標中加入平衡提醒！`;
+                insightSummary += ` 系統也留意到 ${escapeHtml(formatChineseList(partialValues.map(v => v.rawName)))} 屬於「部分重視（✔/✘）」，已在英文句子中加入平衡描述！`;
             } else if (crossOnlyValues.length > 0) {
-                insightSummary += ` 同時避開了大家不重視的 ${escapeHtml(joinChineseList(crossOnlyValues))}。`;
+                insightSummary += ` 同時避開了不重視的 ${escapeHtml(formatChineseList(crossOnlyValues.map(v => v.rawName)))}。`;
             }
             insightText.innerHTML = insightSummary;
             insightBox.classList.remove('hidden');
 
             AudioEngine.playFanfare();
-            showToast(isRephrase ? `已切換為「${styleName}」說法！` : '已根據倫理列表自動生成整體目標！', '✨');
+            showToast(isRephrase ? `已切換為「${styleZhName}」英文說法！` : '已根據表格自動生成英文目標！', '✨');
         }
 
         // ==========================================
@@ -1121,7 +1222,6 @@
             const cols = state.values.length;
             const rows = state.stakeholders.length;
 
-            // 動態計算畫布尺寸，確保文字清晰不擁擠
             const padding = 45;
             const firstColW = 210;
             const colW = Math.max(170, Math.floor(760 / cols));
@@ -1131,7 +1231,7 @@
             const headerH = 145;
             const tableHeadH = 75;
             const rowH = 78;
-            const goalBoxH = 145;
+            const goalBoxH = 155;
             const footerH = 45;
             const canvasH = headerH + tableHeadH + (rows * rowH) + goalBoxH + footerH + padding;
 
@@ -1168,11 +1268,10 @@
             ctx.font = 'bold 17px "Noto Sans TC", sans-serif';
             ctx.fillText(`👥 組員：${members}    |    🤖 主題：${topic}`, padding + 130, 90);
 
-            // 表格起始位置
             const startX = (canvasW - tableW) / 2;
             const startY = headerH;
 
-            // 繪製表頭左上角
+            // 表頭左上角
             ctx.fillStyle = '#0B2545';
             ctx.fillRect(startX, startY, firstColW, tableHeadH);
             ctx.strokeStyle = '#CBD5E1';
@@ -1188,7 +1287,7 @@
             ctx.textAlign = 'left';
             ctx.fillText('⬇️ 持份者', startX + 16, startY + 58);
 
-            // 繪製價值觀表頭
+            // 價值觀表頭
             state.values.forEach((val, cIdx) => {
                 const x = startX + firstColW + cIdx * colW;
                 ctx.fillStyle = '#E0F2FE';
@@ -1201,11 +1300,10 @@
                 ctx.fillText(val || `價值觀 ${cIdx + 1}`, x + colW / 2, startY + 45);
             });
 
-            // 繪製持份者與格子
+            // 持份者與格子
             state.stakeholders.forEach((stakeholder, rIdx) => {
                 const y = startY + tableHeadH + rIdx * rowH;
 
-                // 左欄：持份者
                 ctx.fillStyle = '#FEF3C7';
                 ctx.fillRect(startX, y, firstColW, rowH);
                 ctx.strokeRect(startX, y, firstColW, rowH);
@@ -1215,7 +1313,6 @@
                 ctx.textAlign = 'center';
                 ctx.fillText(stakeholder || `持份者 ${rIdx + 1}`, startX + firstColW / 2, y + 46);
 
-                // 內容格
                 state.values.forEach((_, cIdx) => {
                     const x = startX + firstColW + cIdx * colW;
                     const cellVal = state.cells[rIdx][cIdx] || 0;
@@ -1250,9 +1347,9 @@
                 });
             });
 
-            // 繪製底部目標框
+            // 底部英文目標框
             const goalY = startY + tableHeadH + rows * rowH + 22;
-            roundRect(ctx, startX, goalY, tableW, 110, 16, '#FFFFFF');
+            roundRect(ctx, startX, goalY, tableW, 120, 16, '#FFFFFF');
             ctx.strokeStyle = '#FFD166';
             ctx.lineWidth = 3;
             ctx.stroke();
@@ -1260,12 +1357,12 @@
             ctx.fillStyle = '#0B2545';
             ctx.font = '900 19px "Noto Sans TC", sans-serif';
             ctx.textAlign = 'left';
-            ctx.fillText('🎯 「聊天機器人小幫手」的目標：', startX + 20, goalY + 34);
+            ctx.fillText('🎯 「聊天機器人小幫手」英文目標 (English Goal)：', startX + 20, goalY + 34);
 
-            const goalText = document.getElementById('chatbot-goal').value.trim() || '（尚未填寫目標）';
+            const goalText = document.getElementById('chatbot-goal').value.trim() || '(Not generated yet)';
             ctx.fillStyle = '#334155';
-            ctx.font = 'bold 17px "Noto Sans TC", sans-serif';
-            wrapCanvasText(ctx, goalText, startX + 20, goalY + 66, tableW - 40, 26);
+            ctx.font = 'bold 16px "Nunito", "Noto Sans TC", sans-serif';
+            wrapCanvasText(ctx, goalText, startX + 20, goalY + 64, tableW - 40, 24);
 
             // 頁尾版權
             ctx.fillStyle = '#64748B';
@@ -1273,7 +1370,6 @@
             ctx.textAlign = 'center';
             ctx.fillText('JC GoAI 賽馬會人工智能教育 • 互動倫理列表學習工具', canvasW / 2, canvasH - 16);
 
-            // 觸發下載
             const link = document.createElement('a');
             link.download = `GoAI_倫理列表_${topic}.png`;
             link.href = canvas.toDataURL('image/png');
@@ -1283,7 +1379,6 @@
             showToast('倫理列表圖片已成功下載！', '📸');
         }
 
-        // Canvas 輔助函數：圓角矩形
         function roundRect(ctx, x, y, width, height, radius, fillStyle) {
             ctx.beginPath();
             ctx.moveTo(x + radius, y);
@@ -1302,7 +1397,6 @@
             }
         }
 
-        // Canvas 輔助函數：中文自動換行
         function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
             const chars = text.split('');
             let line = '';
